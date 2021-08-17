@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { Password } from '../services/password'
 
 // * An interface that describes the properties required to create a new user
 interface UserAttrs {
@@ -26,6 +27,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+})
+
+// * using function keyword instead of arrow function because in case of arrow functions,
+// * the 'this' keyword refers to the context of whole file. Not what we want.
+userSchema.pre('save', async function (done) {
+  if (this.isModified('password')) {
+    const hashed = await Password.toHash(this.get('password'))
+    this.set('password', hashed)
+  }
+  done()
 })
 
 // * Allows us to make a new User doc via: User.buildUser() function
