@@ -1,7 +1,13 @@
-import { MongoMemoryServer } from 'mongodb-memory-server'
+import request from 'supertest'
 import mongoose from 'mongoose'
+import { MongoMemoryServer } from 'mongodb-memory-server'
 
 import { app } from '../app'
+
+// * to tell typescript that there is a global function named `signin`
+declare global {
+  var signin: () => Promise<string[]>
+}
 
 let mongo: any
 
@@ -31,3 +37,22 @@ afterAll(async () => {
   await mongo.stop()
   await mongoose.connection.close()
 })
+
+// * global function; only available in the test environment because
+// * we are making it in this setup.ts file
+global.signin = async () => {
+  const email = 'test@test.com'
+  const password = 'password'
+
+  const response = await request(app)
+    .post('/api/users/signup')
+    .send({
+      email,
+      password,
+    })
+    .expect(201)
+
+  const cookie = response.get('Set-Cookie')
+
+  return cookie
+}
