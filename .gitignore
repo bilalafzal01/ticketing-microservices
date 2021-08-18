@@ -1,3 +1,4 @@
+./common
 node_modules
 *.lock
 .next

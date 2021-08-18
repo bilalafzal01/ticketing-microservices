@@ -15,13 +15,13 @@ const start = async () => {
       useUnifiedTopology: true,
       useCreateIndex: true,
     })
-    console.log(`Connected to AUTH mongodb!`)
+    console.log(`Connected to TICKETS mongodb!`)
   } catch (err) {
     console.error(err)
   }
 
   app.listen(3000, () => {
-    console.log(`Listening AUTH on port 3000!`)
+    console.log(`Listening TICKETS on port 3000!`)
   })
 }
 
