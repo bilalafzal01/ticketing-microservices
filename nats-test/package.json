@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@mafzaltickets/common": "^1.0.8",
     "@types/node": "^16.6.2",
     "node-nats-streaming": "^0.3.2",
     "ts-node-dev": "^1.1.8",

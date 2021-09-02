@@ -6,7 +6,8 @@ import {
   NotAuthorizedError,
 } from '@mafzaltickets/common'
 import { body } from 'express-validator'
-import { Ticket } from '../models/ticket'
+import { Ticket } from '@/models/ticket'
+import { TicketUpdatedPublisher } from '@/events/publishers/ticket-updated-publisher'
 
 const router = express.Router()
 
