@@ -6,8 +6,9 @@ import {
   NotAuthorizedError,
 } from '@mafzaltickets/common'
 import { body } from 'express-validator'
-import { Ticket } from '@/models/ticket'
-import { TicketUpdatedPublisher } from '@/events/publishers/ticket-updated-publisher'
+import { Ticket } from '../models/ticket'
+import { TicketUpdatedPublisher } from '../events/publishers/ticket-updated-publisher'
+import { natsWrapper } from '../nats-wrapper'
 
 const router = express.Router()
 
@@ -38,7 +39,12 @@ router.put(
         price: req.body.price,
       })
       .save()
-
+    new TicketUpdatedPublisher(natsWrapper.client).publish({
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId,
+    })
     return res.status(200).send(ticket)
   }
 )
