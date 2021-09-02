@@ -3,8 +3,6 @@ import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
 import { MongoMemoryServer } from 'mongodb-memory-server'
 
-import { app } from '../app'
-
 // * to tell typescript that there is a global function named `signin`
 declare global {
   var signin: () => string[]
