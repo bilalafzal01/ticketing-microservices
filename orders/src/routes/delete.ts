@@ -8,7 +8,9 @@ import {
   validateRequest,
 } from '@mafzaltickets/common'
 import { param } from 'express-validator'
+import { natsWrapper } from '../nats-wrapper'
 import { Order } from '../models/order'
+import { OrderCancelledPublisher } from '../events/publishers/order-cancelled-publisher'
 
 const router = express.Router()
 
@@ -39,6 +41,12 @@ router.delete(
     await order.save()
 
     // * publish an event that this order was cancelled
+    new OrderCancelledPublisher(natsWrapper.client).publish({
+      id: order.id,
+      ticket: {
+        id: order.ticket.id,
+      },
+    })
 
     res.status(204).send(order)
   }
