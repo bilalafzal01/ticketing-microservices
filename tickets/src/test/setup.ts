@@ -1,4 +1,3 @@
-import request from 'supertest'
 import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
 import { MongoMemoryServer } from 'mongodb-memory-server'
@@ -9,6 +8,9 @@ declare global {
 }
 
 let mongo: any
+
+// * for mock purposes
+jest.mock(`../nats-wrapper.ts`)
 
 // * hook function that runs before the tests start
 beforeAll(async () => {
@@ -25,6 +27,9 @@ beforeAll(async () => {
 
 // * hook that runs before each of our test
 beforeEach(async () => {
+  // * clear all mocks
+  jest.clearAllMocks()
+
   const collections = await mongoose.connection.db.collections()
   for (let collection of collections) {
     await collection.deleteMany({})
