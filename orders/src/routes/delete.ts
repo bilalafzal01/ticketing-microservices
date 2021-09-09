@@ -21,7 +21,7 @@ router.delete(
     param('orderId')
       .not()
       .isEmpty()
-      .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
+      .custom((input: string) => mongoose.isValidObjectId(input))
       .withMessage('orderId must be provided'),
   ],
   validateRequest,
